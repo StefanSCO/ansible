@@ -16,7 +16,6 @@
         - neovim
         - util-linux-user
         - zsh
-        - 
   - name: Check if Oh-My-ZSH is installed
     stat:
       path: ${ZSH_CUSTOM:-$HOME/.oh-my-zsh}
