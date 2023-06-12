@@ -26,7 +26,7 @@
       url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
       mode: a+x
       dest: /tmp/ohmyzsh-install.sh
-    when: ohmyzsh.stat.exists == False
+    when: ohmyzsh.stat.isdir is defined and ohmyzsh.stat.isdir
   - name: Install Oh-My-ZSH
     become: true
     become_user: scoit
@@ -34,19 +34,19 @@
       argv: 
       - /tmp/ohmyzsh-install.sh
       - --unattended
-    when: ohmyzsh.stat.exists == False
+    when: ohmyzsh.stat.isdir is defined and ohmyzsh.stat.isdir
   - name: Remove Oh-My-ZSH Installer
     file:
       path: /tmp/ohmyzsh-install.sh
       state: absent
-    when: ohmyzsh.stat.exists == False
+    when: ohmyzsh.stat.isdir is defined and ohmyzsh.stat.isdir
   - name: Download PowerLevel10k
     git:
       repo: https://github.com/romkatv/powerlevel10k.git
       depth: 1
       clone: true
       dest: ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
-    when: ohmyzsh.stat.exists == False
+    when: ohmyzsh.stat.isdir is defined and ohmyzsh.stat.isdir
   - name: Copy ZSH config files - zshrc
     copy:
       src:
