@@ -49,12 +49,10 @@
     when: ohmyzsh.stat.isdir is defined and ohmyzsh.stat.isdir
   - name: Copy ZSH config files - zshrc
     copy:
-      src:
-        - .zshrc
+      src: .zshrc
       dest: ~/
   - name: Copy ZSH config files - P10k
     copy:
-      src:
-        - .p10k.zsh
+      src: .p10k.zsh
       dest: ~/
       
