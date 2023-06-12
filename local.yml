@@ -33,16 +33,19 @@
       argv: 
       - /tmp/ohmyzsh-install.sh
       - --unattended
+    when: ohmyzsh.stat.exists == False
   - name: Remove Oh-My-ZSH Installer
     file:
       path: /tmp/ohmyzsh-install.sh
       state: absent
+    when: ohmyzsh.stat.exists == False
   - name: Download PowerLevel10k
     git:
       repo: https://github.com/romkatv/powerlevel10k.git
       depth: 1
       clone: true
       dest: ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+    when: ohmyzsh.stat.exists == False
   - name: Copy ZSH config files
     copy:
       src:
