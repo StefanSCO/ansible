@@ -16,6 +16,7 @@
         - neovim
         - util-linux-user
         - zsh
+      state: latest
   - name: Check if Oh-My-ZSH is installed
     stat:
       path: ${ZSH_CUSTOM:-$HOME/.oh-my-zsh}
@@ -46,10 +47,14 @@
       clone: true
       dest: ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
     when: ohmyzsh.stat.exists == False
-  - name: Copy ZSH config files
+  - name: Copy ZSH config files - zshrc
     copy:
       src:
         - .zshrc
+      dest: ~/
+  - name: Copy ZSH config files - P10k
+    copy:
+      src:
         - .p10k.zsh
       dest: ~/
       
