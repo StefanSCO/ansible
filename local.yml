@@ -3,6 +3,51 @@
   become: true
 
   tasks:
-  - name: Install htop
+  - name: Enable epel-release
     yum:
-      name: htop
+      name: epel-release
+  - name: Install packages
+    yum:
+      name: 
+        - htop
+        - tmux
+        - open-vm-tools
+        - git
+        - neovim
+        - util-linux-user
+        - zsh
+        - 
+  - name: Check if Oh-My-ZSH is installed
+    stat:
+      path: ${ZSH_CUSTOM:-$HOME/.oh-my-zsh}
+    register: ohmyzsh
+  - name: Download Oh-My-ZSH Installer
+    get_url:
+      url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+      mode: a+x
+      dest: /tmp/ohmyzsh-install.sh
+    when: ohmyzsh.stat.exists == False
+  - name: Install Oh-My-ZSH
+    become: true
+    become_user: scoit
+    command:
+      argv: 
+      - /tmp/ohmyzsh-install.sh
+      - --unattended
+  - name: Remove Oh-My-ZSH Installer
+    file:
+      path: /tmp/ohmyzsh-install.sh
+      state: absent
+  - name: Download PowerLevel10k
+    git:
+      repo: https://github.com/romkatv/powerlevel10k.git
+      depth: 1
+      clone: true
+      dest: ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+  - name: Copy ZSH config files
+    copy:
+      src:
+        - .zshrc
+        - .p10k.zsh
+      dest: ~/
+      
